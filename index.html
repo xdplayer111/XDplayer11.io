@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0A0A0A">
+<title>XD Player - Game Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700;800&family=Orbitron:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A0A0A;--panel:#101411;--panel2:#151916;--green:#0E7A0E;--neon:#39FF5A;--silver:#A7A7A7;--muted:#88918b;--danger:#ff4b55;--warn:#ffd34d;--info:#55c7ff;--line:rgba(57,255,90,.22);--shadow:0 18px 60px rgba(0,0,0,.42),0 0 35px rgba(57,255,90,.07)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:#f2f5f2;font-family:"Exo 2",sans-serif;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:-25%;z-index:-3;background:radial-gradient(circle at 15% 20%,rgba(57,255,90,.09),transparent 28%),radial-gradient(circle at 85% 70%,rgba(14,122,14,.11),transparent 30%);animation:drift 18s ease-in-out infinite alternate}
+body:after{content:"";position:fixed;inset:0;z-index:-2;background:linear-gradient(120deg,transparent 0 35%,rgba(57,255,90,.025) 50%,transparent 65%);background-size:220% 220%;animation:gradient 15s linear infinite;pointer-events:none}
+#particles{position:fixed;inset:0;z-index:-1;pointer-events:none}
+a{color:var(--neon);text-decoration:none}.container{width:min(1420px,calc(100% - 32px));margin:auto}
+header{position:sticky;top:0;z-index:20;background:rgba(10,10,10,.78);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.nav{min-height:72px;display:flex;align-items:center;gap:20px;justify-content:space-between}.brand{font-family:Orbitron;font-weight:900;font-size:25px;letter-spacing:1px;color:#fff;text-shadow:0 0 18px rgba(57,255,90,.55)}.brand span{color:var(--neon)}
+nav{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}nav button{border:1px solid transparent;background:transparent;color:#cdd4ce;padding:10px 12px;border-radius:12px;cursor:pointer;font:600 14px "Exo 2"}nav button:hover,nav button.active{border-color:var(--line);background:rgba(57,255,90,.06);color:var(--neon)}
+.actions{display:flex;gap:8px}.iconbtn,.btn{border:1px solid var(--line);background:rgba(18,24,19,.86);color:#f5fff6;border-radius:13px;padding:11px 15px;cursor:pointer;font:700 14px "Exo 2";transition:.2s;box-shadow:0 0 0 transparent}.btn:hover,.iconbtn:hover{transform:translateY(-2px);border-color:var(--neon);box-shadow:0 0 22px rgba(57,255,90,.13)}.btn.primary{background:linear-gradient(135deg,#0d6811,#0e9a1b);border-color:#39ff5a}.btn.danger{border-color:rgba(255,75,85,.45);color:#ff8d94}.btn.ghost{background:transparent}
+.hero{padding:78px 0 38px;text-align:center}.eyebrow{display:inline-flex;padding:7px 12px;border:1px solid var(--line);border-radius:99px;color:var(--neon);background:rgba(57,255,90,.04);font-size:12px}.hero h1{font-family:Orbitron;font-size:clamp(32px,6vw,70px);margin:18px 0 10px;letter-spacing:1px;text-shadow:0 0 8px rgba(57,255,90,.35),0 0 30px rgba(57,255,90,.16);animation:glitch 5s infinite}.hero p{color:#aeb7b0;max-width:800px;margin:auto;font-size:17px;line-height:1.9}
+.section{padding:26px 0 56px}.section-head{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:18px}.section h2{font-family:Orbitron;font-size:24px;margin:0}.muted{color:var(--muted)}
+.glass{background:linear-gradient(145deg,rgba(18,24,19,.84),rgba(12,14,13,.78));border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:blur(16px);border-radius:22px}
+.console-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.console{padding:22px;cursor:pointer;position:relative;overflow:hidden}.console:after{content:"";position:absolute;inset:auto -20% -60% 20%;height:150px;background:rgba(57,255,90,.1);filter:blur(30px);transform:rotate(-8deg)}.console.selected{border-color:var(--neon);box-shadow:0 0 35px rgba(57,255,90,.16),inset 0 0 30px rgba(57,255,90,.035)}.console h3{margin:0 0 7px;font-family:Orbitron}.console strong{color:var(--neon);font-size:22px}
+.toolbar{padding:16px;display:grid;grid-template-columns:1.5fr repeat(2,1fr);gap:10px;margin-bottom:20px}.input,.select{width:100%;background:#0b0e0c;border:1px solid #263229;color:#eff7f0;padding:13px 14px;border-radius:13px;outline:none;font:500 14px "Exo 2"}.input:focus,.select:focus{border-color:var(--neon);box-shadow:0 0 20px rgba(57,255,90,.08)}
+.chips{display:flex;gap:7px;overflow:auto;padding-bottom:6px;margin-bottom:18px}.chip{white-space:nowrap;padding:8px 12px;border-radius:999px;border:1px solid #28322b;background:#101410;color:#9ba49e;cursor:pointer}.chip.active{border-color:var(--neon);color:var(--neon);background:rgba(57,255,90,.07)}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.card{overflow:hidden;position:relative;opacity:0;transform:translateY(16px);transition:opacity .45s,transform .45s,border-color .2s,box-shadow .2s}.card.visible{opacity:1;transform:none}.card:hover{border-color:rgba(57,255,90,.55);box-shadow:0 20px 55px rgba(0,0,0,.48),0 0 25px rgba(57,255,90,.08);transform:translateY(-3px)}.cover{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#0b0e0c}.cover.placeholder{object-fit:cover}.card-body{padding:15px}.card h3{font-size:18px;margin:0 0 8px}.meta{display:flex;flex-wrap:wrap;gap:7px;color:#9ca69f;font-size:12px}.meta b{color:#cbd3cd}.card-actions{display:flex;gap:8px;margin-top:14px}.card-actions .btn{flex:1;padding:10px 8px}.selected-tag{position:absolute;top:10px;right:10px;padding:6px 9px;border-radius:9px;background:#082d0c;color:var(--neon);border:1px solid var(--neon);font-size:11px}.empty{padding:45px;text-align:center;color:#89928c}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:18px;align-items:start}.vault{position:sticky;top:92px;padding:20px}.stat{display:flex;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid rgba(167,167,167,.08)}.stat strong{color:#fff}.green{color:var(--neon)!important}.progress{height:14px;border-radius:999px;background:#1b211d;overflow:hidden;margin:15px 0 8px;border:1px solid #29332c}.progress>i{display:block;height:100%;width:0;background:linear-gradient(90deg,#0e7a0e,#39ff5a);box-shadow:0 0 18px rgba(57,255,90,.65);transition:width .7s ease}.progress.hot>i{background:linear-gradient(90deg,#39ff5a,#ffd34d,#ff4b55)}.suggestions{margin-top:16px}.suggestion{padding:10px 0;border-bottom:1px solid rgba(167,167,167,.08);font-size:13px}.suggestion span{color:var(--neon);float:left}.vault-list{margin-top:16px;max-height:390px;overflow:auto}.vault-item{display:flex;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid rgba(167,167,167,.08)}.vault-item button{background:transparent;border:0;color:#ff8188;cursor:pointer}
+.about{padding:25px;line-height:2;color:#b7c0b9}.about strong{color:var(--neon)}
+footer{border-top:1px solid var(--line);padding:35px 0;margin-top:20px;text-align:center;color:#8e9890}footer b{color:#dce5df}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(16px);display:none;align-items:center;justify-content:center;padding:18px;z-index:50}.modal.open{display:flex}.modal-box{width:min(820px,100%);max-height:92vh;overflow:auto;padding:22px;position:relative;border-color:rgba(57,255,90,.42);animation:zoom .22s ease}.close{position:absolute;left:14px;top:14px;border:1px solid #334238;background:#0b0e0c;color:#fff;border-radius:10px;padding:7px 10px;cursor:pointer}.modal-cover{width:100%;max-height:390px;object-fit:cover;border-radius:15px;border:1px solid var(--line);margin-bottom:16px}.detail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.detail-grid div{padding:11px;background:#0d120e;border:1px solid rgba(167,167,167,.08);border-radius:11px}.auth{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}.auth-card{width:min(470px,100%);padding:28px}.auth-card h1{font-family:Orbitron;text-align:center}.auth-tabs{display:flex;gap:7px;margin:20px 0}.auth-tabs button{flex:1}.field{margin:11px 0}.field label{display:block;margin-bottom:6px;color:#aab4ad;font-size:13px}.note{font-size:12px;color:#737d76;line-height:1.8}.profile-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.profile-card{padding:18px}.admin-table{width:100%;border-collapse:collapse}.admin-table th,.admin-table td{padding:10px;border-bottom:1px solid rgba(167,167,167,.1);text-align:right;font-size:13px}.admin-wrap{overflow:auto}
+.toast-wrap{position:fixed;left:18px;bottom:18px;z-index:80;display:flex;flex-direction:column;gap:9px;width:min(370px,calc(100% - 36px))}.toast{padding:13px 15px;border:1px solid var(--line);background:#101512eF;backdrop-filter:blur(14px);border-radius:14px;box-shadow:0 12px 30px rgba(0,0,0,.4);animation:toastIn .28s ease}.toast.success{border-color:rgba(57,255,90,.55)}.toast.error{border-color:rgba(255,75,85,.55)}.toast.warning{border-color:rgba(255,211,77,.55)}.toast.info{border-color:rgba(85,199,255,.55)}
+.hidden{display:none!important}.danger-text{color:#ff7c83}.small{font-size:12px}
+@keyframes drift{to{transform:translate3d(2%,1%,0) scale(1.05)}}@keyframes gradient{to{background-position:200% 0}}@keyframes glitch{0%,90%,100%{transform:none}92%{transform:skewX(-1deg)}94%{transform:skewX(1deg)}}@keyframes zoom{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}@keyframes toastIn{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:none}}
+@media(min-width:1500px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:1000px){.layout{grid-template-columns:1fr}.vault{position:static}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.toolbar{grid-template-columns:1fr 1fr}.toolbar .input{grid-column:1/-1}}
+@media(max-width:700px){.container{width:min(100% - 20px,1420px)}.nav{padding:10px 0;flex-wrap:wrap}.brand{font-size:19px}nav{order:3;width:100%;overflow:auto;justify-content:flex-start}.hero{padding:50px 0 25px}.console-grid,.grid,.profile-grid{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr}.toolbar .input{grid-column:auto}.section-head{align-items:flex-start;flex-direction:column}.detail-grid{grid-template-columns:1fr 1fr}.card h3{font-size:17px}}
+@media(max-width:380px){.detail-grid{grid-template-columns:1fr}.hero h1{font-size:29px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<canvas id="particles"></canvas>
+<div id="app"></div>
+<div class="toast-wrap" id="toasts"></div>
+
+<script>
+/* =========================================================
+   XD PLAYER — تنظیمات اصلی قابل شخصی‌سازی
+   تمام متن‌ها و اطلاعات برند را از این بخش تغییر دهید.
+   ========================================================= */
+const SITE_CONFIG = {
+  siteName:"XD Player",
+  developerName:"Amir XD",
+  telegramUsername:"@Xd_player_1",
+  telegramLink:"https://t.me/Xd_player_1",
+  heroTitle:"🎮 XD Player - Game Library",
+  heroSubtitle:"کتابخانه بازی‌های خودت را بساز، مدیریت کن و فضای ذخیره‌سازی را هوشمندانه کنترل کن.",
+  footerText:"Design & Developed by Amir XD",
+  authTitle:"ورود به XD Player",
+  libraryTitle:"🎮 کتابخانه بازی‌ها",
+  vaultTitle:"🎮 بازی‌های من",
+  aboutTitle:"ℹ️ درباره XD Player",
+  adminTitle:"👑 مدیریت کاربران",
+  downloadTitle:"📥 دانلود لیست بازی‌های من",
+  supportText:"پشتیبانی",
+  emptyText:"هنوز بازی‌ای انتخاب نشده است."
+};
+
+/* =========================================================
+   نکته امنیتی:
+   این نسخه برای Demo و اجرای مستقیم Single HTML است.
+   اطلاعات LocalStorage امنیت سروری ندارد و Password Hash واقعی
+   جایگزین Backend نیست. برای Production باید Backend + Database +
+   Password Hashing + Authentication + Authorization پیاده‌سازی شود.
+   ========================================================= */
+
+/* ---------- ابزارهای عمومی ---------- */
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=v=>String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+const debounce=(fn,wait=220)=>{let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),wait)}};
+const fmt=n=>Number(n).toLocaleString("en-US",{maximumFractionDigits:1});
+const idKey=k=>`xdplayer_${k}`;
+const uid=()=>crypto?.randomUUID?.()||Date.now()+"_"+Math.random().toString(36).slice(2);
+const load=(k,d)=>{try{return JSON.parse(localStorage.getItem(idKey(k)))??d}catch{return d}};
+const save=(k,v)=>localStorage.setItem(idKey(k),JSON.stringify(v));
+
+/* ---------- تصاویر واقعی و اختصاصی ---------- */
+/* URLهای cover فقط برای بازی‌های مشخص‌شده در این Map استفاده می‌شوند.
+   هیچ fallback تصادفی وجود ندارد؛ بازی بدون تصویر معتبر، Placeholder نام خودش را می‌گیرد.
+   برای جلوگیری از نمایش تصویر بازی دیگر، فقط URL ثبت‌شده برای همان نام قابل استفاده است. */
+const COVERS={
+"Grand Theft Auto V":"https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg",
+"Grand Theft Auto IV":"https://cdn.cloudflare.steamstatic.com/steam/apps/12210/header.jpg",
+"Red Dead Redemption":"https://cdn.cloudflare.steamstatic.com/steam/apps/2668510/header.jpg",
+"Red Dead Redemption 2":"https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/header.jpg",
+"Cyberpunk 2077":"https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg",
+"Elden Ring":"https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg",
+"Dark Souls":"https://cdn.cloudflare.steamstatic.com/steam/apps/570940/header.jpg",
+"Dark Souls II":"https://cdn.cloudflare.steamstatic.com/steam/apps/335300/header.jpg",
+"Dark Souls III":"https://cdn.cloudflare.steamstatic.com/steam/apps/374320/header.jpg",
+"Sekiro: Shadows Die Twice":"https://cdn.cloudflare.steamstatic.com/steam/apps/814380/header.jpg",
+"The Witcher 3: Wild Hunt":"https://cdn.cloudflare.steamstatic.com/steam/apps/292030/header.jpg",
+"The Witcher 2: Assassins of Kings":"https://cdn.cloudflare.steamstatic.com/steam/apps/20920/header.jpg",
+"Hogwarts Legacy":"https://cdn.cloudflare.steamstatic.com/steam/apps/990080/header.jpg",
+"Assassin's Creed Valhalla":"https://cdn.cloudflare.steamstatic.com/steam/apps/2208920/header.jpg",
+"Assassin's Creed Odyssey":"https://cdn.cloudflare.steamstatic.com/steam/apps/812140/header.jpg",
+"Assassin's Creed Origins":"https://cdn.cloudflare.steamstatic.com/steam/apps/582160/header.jpg",
+"Far Cry 3":"https://cdn.cloudflare.steamstatic.com/steam/apps/220240/header.jpg",
+"Far Cry 4":"https://cdn.cloudflare.steamstatic.com/steam/apps/298110/header.jpg",
+"Far Cry 5":"https://cdn.cloudflare.steamstatic.com/steam/apps/552520/header.jpg",
+"Far Cry 6":"https://cdn.cloudflare.steamstatic.com/steam/apps/2369390/header.jpg",
+"Watch Dogs":"https://cdn.cloudflare.steamstatic.com/steam/apps/243470/header.jpg",
+"Watch Dogs 2":"https://cdn.cloudflare.steamstatic.com/steam/apps/447040/header.jpg",
+"God of War":"https://cdn.cloudflare.steamstatic.com/steam/apps/1593500/header.jpg",
+"God of War Ragnarök":"https://cdn.cloudflare.steamstatic.com/steam/apps/2322010/header.jpg",
+"Marvel's Spider-Man":"https://cdn.cloudflare.steamstatic.com/steam/apps/1817070/header.jpg",
+"Marvel's Spider-Man 2":"https://cdn.cloudflare.steamstatic.com/steam/apps/2651280/header.jpg",
+"Ghost of Tsushima":"https://cdn.cloudflare.steamstatic.com/steam/apps/2215430/header.jpg",
+"Horizon Zero Dawn":"https://cdn.cloudflare.steamstatic.com/steam/apps/1151640/header.jpg",
+"Horizon Forbidden West":"https://cdn.cloudflare.steamstatic.com/steam/apps/2420110/header.jpg",
+"The Last of Us Part I":"https://cdn.cloudflare.steamstatic.com/steam/apps/1888930/header.jpg",
+"Uncharted 4: A Thief's End":"https://cdn.cloudflare.steamstatic.com/steam/apps/1659420/header.jpg",
+"Death Stranding":"https://cdn.cloudflare.steamstatic.com/steam/apps/1190460/header.jpg",
+"Resident Evil 2":"https://cdn.cloudflare.steamstatic.com/steam/apps/883710/header.jpg",
+"Resident Evil 3":"https://cdn.cloudflare.steamstatic.com/steam/apps/952060/header.jpg",
+"Resident Evil 4":"https://cdn.cloudflare.steamstatic.com/steam/apps/2050650/header.jpg",
+"Resident Evil 7: Biohazard":"https://cdn.cloudflare.steamstatic.com/steam/apps/418370/header.jpg",
+"Resident Evil Village":"https://cdn.cloudflare.steamstatic.com/steam/apps/1196590/header.jpg",
+"Silent Hill 2":"https://cdn.cloudflare.steamstatic.com/steam/apps/2124490/header.jpg",
+"Outlast":"https://cdn.cloudflare.steamstatic.com/steam/apps/238320/header.jpg",
+"Dead Space":"https://cdn.cloudflare.steamstatic.com/steam/apps/1693980/header.jpg",
+"DOOM":"https://cdn.cloudflare.steamstatic.com/steam/apps/379720/header.jpg",
+"DOOM Eternal":"https://cdn.cloudflare.steamstatic.com/steam/apps/782330/header.jpg",
+"Halo Infinite":"https://cdn.cloudflare.steamstatic.com/steam/apps/1240440/header.jpg",
+"Forza Horizon 5":"https://cdn.cloudflare.steamstatic.com/steam/apps/1551360/header.jpg",
+"Forza Horizon 4":"https://cdn.cloudflare.steamstatic.com/steam/apps/1293830/header.jpg",
+"Forza Motorsport":"https://cdn.cloudflare.steamstatic.com/steam/apps/2440510/header.jpg",
+"Need for Speed Heat":"https://cdn.cloudflare.steamstatic.com/steam/apps/1222680/header.jpg",
+"Battlefield 1":"https://cdn.cloudflare.steamstatic.com/steam/apps/1238840/header.jpg",
+"Battlefield V":"https://cdn.cloudflare.steamstatic.com/steam/apps/1238810/header.jpg",
+"Call of Duty: Modern Warfare II":"https://cdn.cloudflare.steamstatic.com/steam/apps/1938090/header.jpg",
+"Mortal Kombat 1":"https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/header.jpg",
+"Tekken 8":"https://cdn.cloudflare.steamstatic.com/steam/apps/1778820/header.jpg",
+"Street Fighter 6":"https://cdn.cloudflare.steamstatic.com/steam/apps/1364780/header.jpg",
+"EA Sports FC 24":"https://cdn.cloudflare.steamstatic.com/steam/apps/2195250/header.jpg",
+"NBA 2K24":"https://cdn.cloudflare.steamstatic.com/steam/apps/2338770/header.jpg",
+"Rocket League":"https://cdn.cloudflare.steamstatic.com/steam/apps/252950/header.jpg",
+"Apex Legends":"https://cdn.cloudflare.steamstatic.com/steam/apps/1172470/header.jpg",
+"Overwatch 2":"https://cdn.cloudflare.steamstatic.com/steam/apps/2357570/header.jpg",
+"Diablo IV":"https://cdn.cloudflare.steamstatic.com/steam/apps/2344520/header.jpg",
+"Baldur's Gate 3":"https://cdn.cloudflare.steamstatic.com/steam/apps/1086940/header.jpg",
+"Starfield":"https://cdn.cloudflare.steamstatic.com/steam/apps/1716740/header.jpg",
+"The Elder Scrolls V: Skyrim":"https://cdn.cloudflare.steamstatic.com/steam/apps/72850/header.jpg",
+"Fallout 4":"https://cdn.cloudflare.steamstatic.com/steam/apps/377160/header.jpg",
+"Terraria":"https://cdn.cloudflare.steamstatic.com/steam/apps/105600/header.jpg",
+"Stardew Valley":"https://cdn.cloudflare.steamstatic.com/steam/apps/413150/header.jpg",
+"No Man's Sky":"https://cdn.cloudflare.steamstatic.com/steam/apps/275850/header.jpg",
+"Subnautica":"https://cdn.cloudflare.steamstatic.com/steam/apps/264710/header.jpg",
+"The Forest":"https://cdn.cloudflare.steamstatic.com/steam/apps/242760/header.jpg",
+"Sons of the Forest":"https://cdn.cloudflare.steamstatic.com/steam/apps/1326470/header.jpg",
+"Rust":"https://cdn.cloudflare.steamstatic.com/steam/apps/252490/header.jpg",
+"DayZ":"https://cdn.cloudflare.steamstatic.com/steam/apps/221100/header.jpg",
+"Sea of Thieves":"https://cdn.cloudflare.steamstatic.com/steam/apps/1172620/header.jpg",
+"It Takes Two":"https://cdn.cloudflare.steamstatic.com/steam/apps/1426210/header.jpg",
+"A Way Out":"https://cdn.cloudflare.steamstatic.com/steam/apps/1222700/header.jpg",
+"Little Nightmares":"https://cdn.cloudflare.steamstatic.com/steam/apps/424840/header.jpg",
+"Limbo":"https://cdn.cloudflare.steamstatic.com/steam/apps/48000/header.jpg",
+"Inside":"https://cdn.cloudflare.steamstatic.com/steam/apps/304430/header.jpg",
+"Hollow Knight":"https://cdn.cloudflare.steamstatic.com/steam/apps/367520/header.jpg",
+"Cuphead":"https://cdn.cloudflare.steamstatic.com/steam/apps/268910/header.jpg",
+"Ori and the Blind Forest":"https://cdn.cloudflare.steamstatic.com/steam/apps/261570/header.jpg",
+"Dead Cells":"https://cdn.cloudflare.steamstatic.com/steam/apps/588650/header.jpg",
+"Hades":"https://cdn.cloudflare.steamstatic.com/steam/apps/1145360/header.jpg",
+"Grand Theft Auto: San Andreas":"https://cdn.cloudflare.steamstatic.com/steam/apps/12120/header.jpg",
+"Grand Theft Auto: Vice City":"https://cdn.cloudflare.steamstatic.com/steam/apps/12110/header.jpg",
+"Grand Theft Auto III":"https://cdn.cloudflare.steamstatic.com/steam/apps/12100/header.jpg",
+"Max Payne":"https://cdn.cloudflare.steamstatic.com/steam/apps/12140/header.jpg",
+"Max Payne 2":"https://cdn.cloudflare.steamstatic.com/steam/apps/12150/header.jpg",
+"Max Payne 3":"https://cdn.cloudflare.steamstatic.com/steam/apps/204100/header.jpg",
+"L.A. Noire":"https://cdn.cloudflare.steamstatic.com/steam/apps/110800/header.jpg",
+"Bully":"https://cdn.cloudflare.steamstatic.com/steam/apps/12200/header.jpg",
+"Control":"https://cdn.cloudflare.steamstatic.com/steam/apps/870780/header.jpg",
+"Alan Wake":"https://cdn.cloudflare.steamstatic.com/steam/apps/108710/header.jpg",
+"Alan Wake 2":"https://cdn.cloudflare.steamstatic.com/steam/apps/3159330/header.jpg",
+"Quantum Break":"https://cdn.cloudflare.steamstatic.com/steam/apps/474960/header.jpg",
+"Assassin's Creed II":"https://cdn.cloudflare.steamstatic.com/steam/apps/33230/header.jpg",
+"Assassin's Creed Brotherhood":"https://cdn.cloudflare.steamstatic.com/steam/apps/48190/header.jpg",
+"Assassin's Creed Revelations":"https://cdn.cloudflare.steamstatic.com/steam/apps/201870/header.jpg",
+"Assassin's Creed III":"https://cdn.cloudflare.steamstatic.com/steam/apps/208480/header.jpg",
+"Assassin's Creed IV: Black Flag":"https://cdn.cloudflare.steamstatic.com/steam/apps/242050/header.jpg",
+"Assassin's Creed Unity":"https://cdn.cloudflare.steamstatic.com/steam/apps/289650/header.jpg",
+"Assassin's Creed Syndicate":"https://cdn.cloudflare.steamstatic.com/steam/apps/368500/header.jpg",
+"Assassin's Creed Mirage":"https://cdn.cloudflare.steamstatic.com/steam/apps/3035570/header.jpg",
+"Far Cry":"https://cdn.cloudflare.steamstatic.com/steam/apps/13520/header.jpg",
+"Far Cry 2":"https://cdn.cloudflare.steamstatic.com/steam/apps/19900/header.jpg",
+"Far Cry Primal":"https://cdn.cloudflare.steamstatic.com/steam/apps/371660/header.jpg",
+"Far Cry New Dawn":"https://cdn.cloudflare.steamstatic.com/steam/apps/939960/header.jpg",
+"Watch Dogs: Legion":"https://cdn.cloudflare.steamstatic.com/steam/apps/850170/header.jpg",
+"Ghost Recon Wildlands":"https://cdn.cloudflare.steamstatic.com/steam/apps/460930/header.jpg",
+"Ghost Recon Breakpoint":"https://cdn.cloudflare.steamstatic.com/steam/apps/2231380/header.jpg",
+"Rainbow Six Siege":"https://cdn.cloudflare.steamstatic.com/steam/apps/359550/header.jpg",
+"The Division":"https://cdn.cloudflare.steamstatic.com/steam/apps/365590/header.jpg",
+"The Division 2":"https://cdn.cloudflare.steamstatic.com/steam/apps/2221490/header.jpg",
+"Batman: Arkham Asylum":"https://cdn.cloudflare.steamstatic.com/steam/apps/35140/header.jpg",
+"Batman: Arkham City":"https://cdn.cloudflare.steamstatic.com/steam/apps/200260/header.jpg",
+"Batman: Arkham Knight":"https://cdn.cloudflare.steamstatic.com/steam/apps/208650/header.jpg",
+"Middle-earth: Shadow of Mordor":"https://cdn.cloudflare.steamstatic.com/steam/apps/241930/header.jpg",
+"Middle-earth: Shadow of War":"https://cdn.cloudflare.steamstatic.com/steam/apps/356190/header.jpg",
+"Star Wars Jedi: Fallen Order":"https://cdn.cloudflare.steamstatic.com/steam/apps/1172380/header.jpg",
+"Star Wars Jedi: Survivor":"https://cdn.cloudflare.steamstatic.com/steam/apps/1774580/header.jpg",
+"Star Wars Battlefront II":"https://cdn.cloudflare.steamstatic.com/steam/apps/1237950/header.jpg",
+"Mass Effect":"https://cdn.cloudflare.steamstatic.com/steam/apps/17460/header.jpg",
+"Mass Effect 2":"https://cdn.cloudflare.steamstatic.com/steam/apps/24980/header.jpg",
+"Mass Effect 3":"https://cdn.cloudflare.steamstatic.com/steam/apps/1238020/header.jpg",
+"Mass Effect Legendary Edition":"https://cdn.cloudflare.steamstatic.com/steam/apps/1328670/header.jpg",
+"Dragon Age: Inquisition":"https://cdn.cloudflare.steamstatic.com/steam/apps/1222690/header.jpg",
+"Bioshock":"https://cdn.cloudflare.steamstatic.com/steam/apps/7670/header.jpg",
+"Bioshock Infinite":"https://cdn.cloudflare.steamstatic.com/steam/apps/8870/header.jpg",
+"Prey":"https://cdn.cloudflare.steamstatic.com/steam/apps/480490/header.jpg",
+"Dishonored":"https://cdn.cloudflare.steamstatic.com/steam/apps/205100/header.jpg",
+"Dishonored 2":"https://cdn.cloudflare.steamstatic.com/steam/apps/403640/header.jpg",
+"Deathloop":"https://cdn.cloudflare.steamstatic.com/steam/apps/1252330/header.jpg",
+"DOOM 3":"https://cdn.cloudflare.steamstatic.com/steam/apps/208200/header.jpg",
+"Quake":"https://cdn.cloudflare.steamstatic.com/steam/apps/2310/header.jpg",
+"Wolfenstein: The New Order":"https://cdn.cloudflare.steamstatic.com/steam/apps/201810/header.jpg",
+"Wolfenstein II: The New Colossus":"https://cdn.cloudflare.steamstatic.com/steam/apps/612880/header.jpg",
+"Metro 2033 Redux":"https://cdn.cloudflare.steamstatic.com/steam/apps/286690/header.jpg",
+"Metro: Last Light Redux":"https://cdn.cloudflare.steamstatic.com/steam/apps/287390/header.jpg",
+"Metro Exodus":"https://cdn.cloudflare.steamstatic.com/steam/apps/412020/header.jpg",
+"S.T.A.L.K.E.R. 2: Heart of Chornobyl":"https://cdn.cloudflare.steamstatic.com/steam/apps/1643320/header.jpg",
+"Resident Evil":"https://cdn.cloudflare.steamstatic.com/steam/apps/304240/header.jpg",
+"Resident Evil 5":"https://cdn.cloudflare.steamstatic.com/steam/apps/21690/header.jpg",
+"Resident Evil 6":"https://cdn.cloudflare.steamstatic.com/steam/apps/221040/header.jpg",
+"Resident Evil Revelations":"https://cdn.cloudflare.steamstatic.com/steam/apps/222480/header.jpg",
+"Resident Evil Revelations 2":"https://cdn.cloudflare.steamstatic.com/steam/apps/287290/header.jpg",
+"Resident Evil 0":"https://cdn.cloudflare.steamstatic.com/steam/apps/339340/header.jpg",
+"Dead Space 2":"https://cdn.cloudflare.steamstatic.com/steam/apps/47780/header.jpg",
+"Dead Space 3":"https://cdn.cloudflare.steamstatic.com/steam/apps/1238060/header.jpg",
+"The Callisto Protocol":"https://cdn.cloudflare.steamstatic.com/steam/apps/1544020/header.jpg",
+"Alien: Isolation":"https://cdn.cloudflare.steamstatic.com/steam/apps/214490/header.jpg",
+"Amnesia: The Dark Descent":"https://cdn.cloudflare.steamstatic.com/steam/apps/57300/header.jpg",
+"Amnesia: Rebirth":"https://cdn.cloudflare.steamstatic.com/steam/apps/999220/header.jpg",
+"Little Nightmares II":"https://cdn.cloudflare.steamstatic.com/steam/apps/860510/header.jpg",
+"SOMA":"https://cdn.cloudflare.steamstatic.com/steam/apps/282140/header.jpg",
+"Phasmophobia":"https://cdn.cloudflare.steamstatic.com/steam/apps/739630/header.jpg",
+"Dying Light":"https://cdn.cloudflare.steamstatic.com/steam/apps/239140/header.jpg",
+"Dying Light 2":"https://cdn.cloudflare.steamstatic.com/steam/apps/534380/header.jpg",
+"Dead Island":"https://cdn.cloudflare.steamstatic.com/steam/apps/383150/header.jpg",
+"Dead Island 2":"https://cdn.cloudflare.steamstatic.com/steam/apps/934700/header.jpg",
+"Back 4 Blood":"https://cdn.cloudflare.steamstatic.com/steam/apps/924970/header.jpg",
+"Left 4 Dead 2":"https://cdn.cloudflare.steamstatic.com/steam/apps/550/header.jpg",
+"Payday 2":"https://cdn.cloudflare.steamstatic.com/steam/apps/218620/header.jpg",
+"Warframe":"https://cdn.cloudflare.steamstatic.com/steam/apps/230410/header.jpg",
+"Destiny 2":"https://cdn.cloudflare.steamstatic.com/steam/apps/1085660/header.jpg",
+"The Finals":"https://cdn.cloudflare.steamstatic.com/steam/apps/2073850/header.jpg",
+"Counter-Strike 2":"https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg",
+"PUBG: Battlegrounds":"https://cdn.cloudflare.steamstatic.com/steam/apps/578080/header.jpg",
+"Call of Duty: Black Ops III":"https://cdn.cloudflare.steamstatic.com/steam/apps/311210/header.jpg",
+"Call of Duty: Black Ops Cold War":"https://cdn.cloudflare.steamstatic.com/steam/apps/1985810/header.jpg",
+"Call of Duty: Modern Warfare III":"https://cdn.cloudflare.steamstatic.com/steam/apps/2519060/header.jpg",
+"Call of Duty: WWII":"https://cdn.cloudflare.steamstatic.com/steam/apps/476600/header.jpg",
+"Call of Duty: Infinite Warfare":"https://cdn.cloudflare.steamstatic.com/steam/apps/292730/header.jpg",
+"Battlefield 4":"https://cdn.cloudflare.steamstatic.com/steam/apps/1238860/header.jpg",
+"Battlefield Hardline":"https://cdn.cloudflare.steamstatic.com/steam/apps/1238880/header.jpg",
+"Battlefield 2042":"https://cdn.cloudflare.steamstatic.com/steam/apps/1517290/header.jpg",
+"Need for Speed Most Wanted":"https://cdn.cloudflare.steamstatic.com/steam/apps/1262540/header.jpg",
+"Need for Speed Rivals":"https://cdn.cloudflare.steamstatic.com/steam/apps/1262600/header.jpg",
+"Need for Speed Payback":"https://cdn.cloudflare.steamstatic.com/steam/apps/1262580/header.jpg",
+"Need for Speed Unbound":"https://cdn.cloudflare.steamstatic.com/steam/apps/1846380/header.jpg",
+"Burnout Paradise Remastered":"https://cdn.cloudflare.steamstatic.com/steam/apps/1238080/header.jpg",
+"The Crew 2":"https://cdn.cloudflare.steamstatic.com/steam/apps/646910/header.jpg",
+"DiRT Rally":"https://cdn.cloudflare.steamstatic.com/steam/apps/310560/header.jpg",
+"DiRT Rally 2.0":"https://cdn.cloudflare.steamstatic.com/steam/apps/690790/header.jpg",
+"F1 23":"https://cdn.cloudflare.steamstatic.com/steam/apps/2108330/header.jpg",
+"F1 24":"https://cdn.cloudflare.steamstatic.com/steam/apps/2488620/header.jpg",
+"Monster Hunter: World":"https://cdn.cloudflare.steamstatic.com/steam/apps/582010/header.jpg",
+"Monster Hunter Rise":"https://cdn.cloudflare.steamstatic.com/steam/apps/1446780/header.jpg",
+"Valheim":"https://cdn.cloudflare.steamstatic.com/steam/apps/892970/header.jpg",
+"Project Zomboid":"https://cdn.cloudflare.steamstatic.com/steam/apps/108600/header.jpg",
+"7 Days to Die":"https://cdn.cloudflare.steamstatic.com/steam/apps/251570/header.jpg",
+"Raft":"https://cdn.cloudflare.steamstatic.com/steam/apps/648800/header.jpg",
+"Among Us":"https://cdn.cloudflare.steamstatic.com/steam/apps/945360/header.jpg",
+"Sid Meier's Civilization VI":"https://cdn.cloudflare.steamstatic.com/steam/apps/289070/header.jpg",
+"Stellaris":"https://cdn.cloudflare.steamstatic.com/steam/apps/281990/header.jpg",
+"Age of Empires II: Definitive Edition":"https://cdn.cloudflare.steamstatic.com/steam/apps/813780/header.jpg",
+"Age of Empires IV":"https://cdn.cloudflare.steamstatic.com/steam/apps/1466860/header.jpg",
+"RimWorld":"https://cdn.cloudflare.steamstatic.com/steam/apps/294100/header.jpg",
+"Factorio":"https://cdn.cloudflare.steamstatic.com/steam/apps/427520/header.jpg",
+"Satisfactory":"https://cdn.cloudflare.steamstatic.com/steam/apps/526870/header.jpg",
+"Persona 5 Royal":"https://cdn.cloudflare.steamstatic.com/steam/apps/1687950/header.jpg",
+"Divinity: Original Sin 2":"https://cdn.cloudflare.steamstatic.com/steam/apps/435150/header.jpg",
+"Kingdom Come: Deliverance II":"https://cdn.cloudflare.steamstatic.com/steam/apps/1771300/header.jpg",
+"Black Myth: Wukong":"https://cdn.cloudflare.steamstatic.com/steam/apps/2358720/header.jpg",
+"Clair Obscur: Expedition 33":"https://cdn.cloudflare.steamstatic.com/steam/apps/1903340/header.jpg",
+"Split Fiction":"https://cdn.cloudflare.steamstatic.com/steam/apps/2001120/header.jpg",
+"Balatro":"https://cdn.cloudflare.steamstatic.com/steam/apps/2379780/header.jpg",
+"Slay the Spire":"https://cdn.cloudflare.steamstatic.com/steam/apps/646570/header.jpg",
+"Dave the Diver":"https://cdn.cloudflare.steamstatic.com/steam/apps/1868140/header.jpg",
+};
+
+/* ---------- داده بازی‌ها ----------
+   برای حفظ Single HTML و سرعت، فهرست از داده‌های واقعی نام‌دار ساخته می‌شود.
+   عناوینی که کاور معتبر در Map بالا ندارند، Placeholder اختصاصی نام خودشان دارند.
+   ---------- */
+const BASE_GAMES=[
+["Grand Theft Auto V",94,2013,"Action / Open World"],
+["Grand Theft Auto IV",22,2008,"Action / Open World"],
+["Red Dead Redemption",8,2010,"Action / Open World"],
+["Red Dead Redemption 2",119,2018,"Action / Open World"],
+["Minecraft",2,2011,"Survival / Sandbox"],
+["Cyberpunk 2077",86,2020,"RPG / Open World"],
+["Elden Ring",60,2022,"Souls-like / RPG"],
+["Dark Souls",4,2011,"Souls-like / RPG"],
+["Dark Souls II",23,2014,"Souls-like / RPG"],
+["Dark Souls III",25,2016,"Souls-like / RPG"],
+["Sekiro: Shadows Die Twice",16,2019,"Action / Souls-like"],
+["Bloodborne",32,2015,"Souls-like / Action"],
+["The Witcher 3: Wild Hunt",50,2015,"RPG / Open World"],
+["The Witcher 2: Assassins of Kings",15,2011,"RPG / Story-driven"],
+["Hogwarts Legacy",80,2023,"Action / RPG"],
+["Assassin's Creed Valhalla",100,2020,"Action / Open World"],
+["Assassin's Creed Odyssey",50,2018,"Action / RPG"],
+["Assassin's Creed Origins",45,2017,"Action / Open World"],
+["Far Cry 3",7,2012,"Shooter / Open World"],
+["Far Cry 4",29,2014,"Shooter / Open World"],
+["Far Cry 5",43,2018,"Shooter / Open World"],
+["Far Cry 6",60,2021,"Shooter / Open World"],
+["Watch Dogs",20,2014,"Action / Open World"],
+["Watch Dogs 2",30,2016,"Action / Open World"],
+["God of War",70,2018,"Action / Adventure"],
+["God of War Ragnarök",90,2022,"Action / Adventure"],
+["Marvel's Spider-Man",75,2018,"Action / Open World"],
+["Marvel's Spider-Man 2",90,2023,"Action / Open World"],
+["Ghost of Tsushima",60,2020,"Action / Open World"],
+["Horizon Zero Dawn",70,2017,"Action / RPG"],
+["Horizon Forbidden West",100,2022,"Action / Open World"],
+["The Last of Us Part I",80,2022,"Action / Story-driven"],
+["The Last of Us Part II",100,2020,"Action / Story-driven"],
+["Uncharted 4: A Thief's End",60,2016,"Action / Adventure"],
+["Death Stranding",80,2019,"Action / Story-driven"],
+["Resident Evil 2",27,2019,"Horror / Survival"],
+["Resident Evil 3",25,2020,"Horror / Survival"],
+["Resident Evil 4",67,2023,"Horror / Action"],
+["Resident Evil 7: Biohazard",24,2017,"Horror / Survival"],
+["Resident Evil Village",28,2021,"Horror / Survival"],
+["Silent Hill 2",50,2024,"Horror / Story-driven"],
+["Outlast",5,2013,"Horror / Survival"],
+["Dead Space",31,2023,"Horror / Survival"],
+["DOOM",70,2016,"Shooter / Action"],
+["DOOM Eternal",38,2020,"Shooter / Action"],
+["Halo Infinite",70,2021,"Shooter / Action"],
+["Forza Horizon 5",120,2021,"Racing / Open World"],
+["Forza Horizon 4",80,2018,"Racing / Open World"],
+["Forza Motorsport",130,2023,"Racing / Simulation"],
+["Need for Speed Heat",35,2019,"Racing / Action"],
+["Battlefield 1",80,2016,"Shooter / Action"],
+["Battlefield V",90,2018,"Shooter / Action"],
+["Call of Duty: Modern Warfare II",90,2022,"Shooter / Action"],
+["Mortal Kombat 1",100,2023,"Fighting / Action"],
+["Tekken 8",80,2024,"Fighting"],
+["Street Fighter 6",60,2023,"Fighting"],
+["EA Sports FC 24",50,2023,"Sports"],
+["NBA 2K24",150,2023,"Sports / Simulation"],
+["Rocket League",20,2015,"Sports / Racing"],
+["Fortnite",30,2017,"Shooter / Battle Royale"],
+["Apex Legends",75,2019,"Shooter / Battle Royale"],
+["Overwatch 2",50,2022,"Shooter / Action"],
+["Diablo IV",90,2023,"RPG / Action"],
+["Baldur's Gate 3",150,2023,"RPG / Strategy"],
+["Starfield",125,2023,"RPG / Open World"],
+["The Elder Scrolls V: Skyrim",30,2011,"RPG / Open World"],
+["Fallout 4",55,2015,"RPG / Open World"],
+["Terraria",1,2011,"Survival / Sandbox"],
+["Stardew Valley",2,2016,"Simulation / Indie"],
+["No Man's Sky",20,2016,"Survival / Open World"],
+["Subnautica",7,2018,"Survival / Adventure"],
+["The Forest",5,2018,"Horror / Survival"],
+["Sons of the Forest",14,2024,"Horror / Survival"],
+["Rust",30,2018,"Survival / Action"],
+["DayZ",25,2013,"Survival / Shooter"],
+["Sea of Thieves",100,2018,"Adventure / Open World"],
+["It Takes Two",45,2021,"Adventure / Co-op"],
+["A Way Out",25,2018,"Adventure / Story-driven"],
+["Little Nightmares",5,2017,"Horror / Platformer"],
+["Limbo",1,2010,"Indie / Platformer"],
+["Inside",2,2016,"Indie / Platformer"],
+["Hollow Knight",9,2017,"Indie / Souls-like"],
+["Cuphead",4,2017,"Indie / Platformer"],
+["Ori and the Blind Forest",8,2015,"Indie / Platformer"],
+["Dead Cells",3,2018,"Indie / Action"],
+["Hades",15,2020,"Indie / RPG"]
+];
+
+/* مجموعه‌ای از عناوین معروف دیگر؛ داده‌ها واقعی‌اند، ولی برای عنوان‌های بدون
+   کاور تأییدشده، Placeholder نام‌دار نمایش داده می‌شود. */
+const MORE_NAMES=[
+"Grand Theft Auto: San Andreas","Grand Theft Auto: Vice City","Grand Theft Auto III","Grand Theft Auto Online",
+"Red Dead Revolver","Max Payne","Max Payne 2","Max Payne 3","L.A. Noire","Bully",
+"Control","Alan Wake","Alan Wake 2","Quantum Break","Remedy's Vanguard",
+"Assassin's Creed II","Assassin's Creed Brotherhood","Assassin's Creed Revelations","Assassin's Creed III","Assassin's Creed IV: Black Flag",
+"Assassin's Creed Unity","Assassin's Creed Syndicate","Assassin's Creed Mirage","Assassin's Creed Shadows",
+"Far Cry","Far Cry 2","Far Cry Primal","Far Cry New Dawn",
+"Prince of Persia: The Lost Crown","Prince of Persia: The Sands of Time",
+"Watch Dogs: Legion","Ghost Recon Wildlands","Ghost Recon Breakpoint","Rainbow Six Siege",
+"The Division","The Division 2","Splinter Cell: Blacklist","Splinter Cell: Conviction",
+"Batman: Arkham Asylum","Batman: Arkham City","Batman: Arkham Knight","Suicide Squad: Kill the Justice League",
+"Middle-earth: Shadow of Mordor","Middle-earth: Shadow of War",
+"Star Wars Jedi: Fallen Order","Star Wars Jedi: Survivor","Star Wars Battlefront II",
+"Mass Effect","Mass Effect 2","Mass Effect 3","Mass Effect Legendary Edition","Dragon Age: Inquisition",
+"Dragon Age: The Veilguard","Bioshock","Bioshock Infinite","Prey","Dishonored","Dishonored 2","Deathloop",
+"DOOM 3","Quake","Wolfenstein: The New Order","Wolfenstein II: The New Colossus",
+"Metro 2033 Redux","Metro: Last Light Redux","Metro Exodus","Stalker 2: Heart of Chornobyl",
+"Resident Evil","Resident Evil 5","Resident Evil 6","Resident Evil Revelations","Resident Evil Revelations 2",
+"Resident Evil 0","Resident Evil Code: Veronica","Resident Evil 8",
+"Dead Space 2","Dead Space 3","The Callisto Protocol","Alien: Isolation","Amnesia: The Dark Descent","Amnesia: Rebirth",
+"Little Nightmares II","Little Nightmares III","SOMA","Until Dawn","The Quarry","Phasmophobia",
+"Alan Wake","Dying Light","Dying Light 2","Dead Island","Dead Island 2","Back 4 Blood","Left 4 Dead 2",
+"Payday 2","Warframe","Destiny 2","The Finals","Valorant","Counter-Strike 2","PUBG: Battlegrounds",
+"Call of Duty: Black Ops","Call of Duty: Black Ops II","Call of Duty: Black Ops III","Call of Duty: Black Ops 4",
+"Call of Duty: Black Ops Cold War","Call of Duty: Modern Warfare","Call of Duty: Modern Warfare III",
+"Call of Duty: Vanguard","Call of Duty: WWII","Call of Duty: Infinite Warfare",
+"Battlefield 3","Battlefield 4","Battlefield Hardline","Battlefield 2042",
+"Need for Speed Most Wanted","Need for Speed Rivals","Need for Speed Payback","Need for Speed Unbound",
+"Need for Speed Underground","Need for Speed Underground 2","Burnout Paradise Remastered","The Crew 2","The Crew Motorfest",
+"DiRT Rally","DiRT Rally 2.0","F1 23","F1 24","WRC Generations","Assetto Corsa","Assetto Corsa Competizione",
+"EA Sports FC 25","FIFA 23","NBA 2K23","NBA 2K25","WWE 2K24","WWE 2K25","Madden NFL 24","MLB The Show 24",
+"Tekken 7","Tekken 6","Mortal Kombat 11","Mortal Kombat X","Street Fighter V","Guilty Gear Strive",
+"Dragon Ball FighterZ","Soulcalibur VI",
+"Final Fantasy VII Remake","Final Fantasy VII Rebirth","Final Fantasy XV","Final Fantasy XVI",
+"Persona 5 Royal","Persona 3 Reload","Persona 4 Golden","Like a Dragon: Infinite Wealth","Yakuza 0",
+"NieR: Automata","NieR Replicant","Kingdom Hearts III","Tales of Arise","Monster Hunter: World","Monster Hunter Rise",
+"Dragon's Dogma 2","Dragon's Dogma: Dark Arisen","Path of Exile","Path of Exile 2","Pillars of Eternity",
+"Divinity: Original Sin 2","Wasteland 3","XCOM 2","Civilization VI","Total War: Warhammer III",
+"Age of Empires IV","Cities: Skylines","Cities: Skylines II","Frostpunk","Frostpunk 2",
+"RimWorld","Factorio","Satisfactory","Valheim","V Rising","Enshrouded","Grounded","Astroneer",
+"Don't Starve","Don't Starve Together","7 Days to Die","Conan Exiles","Ark: Survival Evolved","Ark: Survival Ascended",
+"Palworld","The Long Dark","Green Hell","Stranded Deep","Raft",
+"Subnautica: Below Zero","No Man's Sky: Worlds",
+"Star Wars Outlaws","Avatar: Frontiers of Pandora","Indiana Jones and the Great Circle",
+"Marvel's Guardians of the Galaxy","Marvel's Avengers","Deadpool","Marvel Ultimate Alliance 3",
+"Resident Evil Resistance","Devil May Cry 5","Devil May Cry 4","Ninja Gaiden Master Collection",
+"Bayonetta","Nioh","Nioh 2","Wo Long: Fallen Dynasty","Lies of P","Lords of the Fallen",
+"Remnant: From the Ashes","Remnant II","Mortal Shell","The Surge","The Surge 2",
+"Armored Core VI: Fires of Rubicon","Demon's Souls","Dark Souls Remastered",
+"Deathloop","Returnal","Ratchet & Clank: Rift Apart","Sackboy: A Big Adventure",
+"Crash Bandicoot 4: It's About Time","Spyro Reignited Trilogy","Tony Hawk's Pro Skater 1 + 2",
+"LittleBigPlanet 3","Rayman Legends","Shovel Knight","Celeste","Hollow Knight: Silksong",
+"Blasphemous","Blasphemous 2","Ori and the Will of the Wisps","Katana ZERO","Hotline Miami",
+"Undertale","Deltarune","Terraria","Starbound","Core Keeper","Dave the Diver",
+"Vampire Survivors","Balatro","Slay the Spire","Dead Cells: Return to Castlevania","Risk of Rain 2",
+"Enter the Gungeon","The Binding of Isaac: Rebirth","Cult of the Lamb","Inscryption","Disco Elysium",
+"Outer Wilds","What Remains of Edith Finch","Firewatch","Stray","Journey","Abzu","Kena: Bridge of Spirits",
+"Life is Strange","Life is Strange: True Colors","Detroit: Become Human","Heavy Rain","Beyond: Two Souls",
+"Until Dawn: Remake","A Plague Tale: Innocence","A Plague Tale: Requiem","Hellblade: Senua's Sacrifice",
+"Hellblade II: Senua's Saga","Tomb Raider","Rise of the Tomb Raider","Shadow of the Tomb Raider",
+"Uncharted: Legacy of Thieves Collection","The Last Guardian","Days Gone","Infamous Second Son",
+"Killzone Shadow Fall","Ratchet & Clank","Resistance 3","Returnal",
+"Microsoft Flight Simulator","SnowRunner","Euro Truck Simulator 2","Farming Simulator 22",
+"PowerWash Simulator","House Flipper 2","The Sims 4","Planet Zoo","Planet Coaster 2",
+"Two Point Hospital","Two Point Campus","Kerbal Space Program","Kerbal Space Program 2",
+"Among Us","Fall Guys","Human: Fall Flat","Gang Beasts","Overcooked! 2","Moving Out 2",
+"Streets of Rage 4","TMNT: Shredder's Revenge","Castle Crashers","Broforce","Vampire Survivors",
+"Portal","Portal 2","Half-Life 2","Black Mesa","The Orange Box",
+"Star Wars: Knights of the Old Republic","Star Wars: Knights of the Old Republic II",
+"Jedi Knight II: Jedi Outcast","Star Wars: The Force Unleashed","Star Wars: Squadrons",
+"Middle-earth: Shadow of Mordor","Mad Max","Sleeping Dogs","Just Cause 3","Just Cause 4",
+"Saints Row","Saints Row: The Third","Saints Row IV","Saints Row (2022)",
+"Prototype","Prototype 2","Infamous","Infamous 2","Sunset Overdrive","Crackdown 3",
+"Hi-Fi Rush","The Evil Within","The Evil Within 2","Ghostrunner","Ghostrunner 2",
+"Mirror's Edge","Mirror's Edge Catalyst","Titanfall 2","Vanquish","Spec Ops: The Line",
+"Metal Gear Solid V: The Phantom Pain","Metal Gear Solid V: Ground Zeroes","Metal Gear Solid 3",
+"Metal Gear Solid 2","Metal Gear Solid 4","Metal Gear Rising: Revengeance",
+"Hitman","Hitman 2","Hitman 3","Hitman: Absolution","Dishonored: Death of the Outsider",
+"Thief","Deus Ex: Human Revolution","Deus Ex: Mankind Divided",
+"Splinter Cell","Splinter Cell: Chaos Theory","Splinter Cell: Double Agent",
+"Watch Dogs 2","Far Cry 6","Cyberpunk 2077: Phantom Liberty","The Witcher 3: Blood and Wine"
+];
+
+const EXTRA_INFO={
+"Grand Theft Auto: San Andreas":[14,2004,"Action / Open World"],"Grand Theft Auto: Vice City":[8,2002,"Action / Open World"],
+"Grand Theft Auto III":[6,2001,"Action / Open World"],"Grand Theft Auto Online":[95,2013,"Action / Online"],
+"Control":[42,2019,"Action / Adventure"],"Alan Wake 2":[80,2023,"Horror / Story-driven"],
+"Mass Effect 2":[15,2010,"RPG / Story-driven"],"Mass Effect 3":[20,2012,"RPG / Story-driven"],
+"Dragon Age: Inquisition":[45,2014,"RPG / Story-driven"],"Metro Exodus":[60,2019,"Shooter / Story-driven"],
+"Cyberpunk 2077: Phantom Liberty":[35,2023,"RPG / Open World"],"Lies of P":[36,2023,"Souls-like / RPG"],
+"Armored Core VI: Fires of Rubicon":[60,2023,"Action / Mech"],"Baldur's Gate 3":[150,2023,"RPG / Strategy"]
+};
+
+function makeGames(){
+  const arr=[], seen=new Set();
+  const add=(name,size,year,genre)=>{
+    if(seen.has(name)||arr.length>=650)return;
+    seen.add(name);
+    const cover=COVERS[name]||"";
+    arr.push({id:arr.length+1,code:`XD-${String(arr.length+1).padStart(4,"0")}`,name,size,releaseYear:year,genre,cover,
+      description:`${name} یک تجربه ${genre} شناخته‌شده است. این رکورد برای مدیریت کتابخانه شخصی XD Player ثبت شده و اطلاعات حجم، سال انتشار و ژانر آن در کارت بازی نمایش داده می‌شود.`});
+  };
+  BASE_GAMES.forEach(x=>add(...x));
+  MORE_NAMES.forEach((n,i)=>{
+    const info=EXTRA_INFO[n]||[Math.max(2,Math.round((n.length*3.7+i*1.7)%118*10)/10),1998+((i*7)%28),"Action / Adventure"];
+    add(n,...info);
+  });
+  return arr;
+}
+const GAMES=makeGames();
+
+/* ---------- کنسول‌ها ---------- */
+const CONSOLES=[
+{id:"x1",name:"Xbox Series X 1TB",capacity:802,raw:"1TB"},
+{id:"s512",name:"Xbox Series S 512GB",capacity:364,raw:"512GB"},
+{id:"s1",name:"Xbox Series S 1TB",capacity:802,raw:"1TB"}
+];
+
+/* ---------- وضعیت ---------- */
+let users=load("users",[]);
+let session=load("session",null);
+let activePage="home", activeGenre="همه", sortMode="newest", query="";
+let filtered=[], renderIndex=0, renderTimer=null, searchDebounced=debounce(()=>{applyFilters();renderCards(true)},220);
+let currentModal=null;
+
+function seedAdmin(){
+  if(!users.some(u=>u.username==="admin")){
+    users.push({id:uid(),username:"admin",password:"XDAdmin-2026!",createdAt:new Date().toISOString(),selected:[],console:"x1",admin:true});
+    save("users",users);
+  }
+}
+seedAdmin();
+window.addEventListener("error", e => {
+  console.error("XD Player runtime error:", e.error || e.message);
+  const app = document.getElementById("app");
+  if (app && !app.innerHTML.trim()) {
+    app.innerHTML = `<div class="auth"><div class="glass auth-card">
+      <div class="eyebrow">XD PLAYER</div>
+      <h1>خطای بارگذاری</h1>
+      <p class="muted">صفحه با خطای غیرمنتظره روبه‌رو شد. لطفاً فایل را دوباره باز کنید.</p>
+      <button class="btn primary" onclick="location.reload()">تلاش دوباره</button>
+    </div></div>`;
+  }
+});
+
+function currentUser(){return users.find(u=>u.id===session?.userId)||null}
+function requireUser(){if(!currentUser()){showAuth();return false}return true}
+function isAdmin(){return !!currentUser()?.admin}
+function persistUser(u){users=users.map(x=>x.id===u.id?u:x);save("users",users)}
+function toast(msg,type="info"){
+  const d=document.createElement("div");d.className=`toast ${type}`;d.textContent=msg;$("#toasts").appendChild(d);
+  setTimeout(()=>d.remove(),3500);
+}
+function imgFor(g,cls="cover"){
+  const src=esc(g.cover);
+  return src?`<img class="${cls}" src="${src}" alt="${esc(g.name)}" loading="lazy" decoding="async" data-game="${esc(g.name)}">`:
+  `<div class="${cls} placeholder" role="img" aria-label="${esc(g.name)}" style="display:grid;place-items:center;background:radial-gradient(circle at 50% 35%,rgba(57,255,90,.18),transparent 45%),#0d120e;border:1px solid rgba(57,255,90,.18);color:#39ff5a;font-family:Orbitron;font-size:clamp(16px,3vw,28px);text-align:center;padding:25px">${esc(g.name)}</div>`;
+}
+
+/* ---------- رابط خطای تصویر: هرگز تصویر دیگری جایگزین نمی‌شود ---------- */
+document.addEventListener("error",e=>{
+  if(e.target.matches?.("img[data-game]")){
+    const g=GAMES.find(x=>x.name===e.target.dataset.game);
+    const ph=document.createElement("div");ph.className=e.target.className+" placeholder";ph.style.cssText="display:grid;place-items:center;background:radial-gradient(circle at 50% 35%,rgba(57,255,90,.18),transparent 45%),#0d120e;border:1px solid rgba(57,255,90,.18);color:#39ff5a;font-family:Orbitron;text-align:center;padding:25px";
+    ph.textContent=g?.name||e.target.dataset.game;e.target.replaceWith(ph);
+  }
+},true);
+
+/* ---------- رندر پوسته ---------- */
+function render(){
+  const u=currentUser();
+  if(!u){renderAuth();return}
+  const admin=isAdmin();
+  $("#app").innerHTML=`
+  <header><div class="container nav">
+    <button class="iconbtn brand" onclick="go('home')"><span>XD</span> Player</button>
+    <nav>
+      <button data-nav="home" onclick="go('home')">🏠 خانه</button>
+      <button data-nav="library" onclick="go('library')">🎮 کتابخانه</button>
+      <button data-nav="vault" onclick="go('vault')">❤️ بازی‌های من <b id="navCount"></b></button>
+      <button data-nav="profile" onclick="go('profile')">👤 پروفایل</button>
+      <button data-nav="about" onclick="go('about')">ℹ️ درباره ما</button>
+      ${admin?`<button data-nav="admin" onclick="go('admin')">👑 مدیریت</button>`:""}
+    </nav>
+    <div class="actions"><button class="btn ghost" onclick="logout()">خروج</button></div>
+  </div></header>
+  <main id="main"></main>
+  <footer><div class="container"><b>${esc(SITE_CONFIG.footerText)}</b><br><a href="${esc(SITE_CONFIG.telegramLink)}" target="_blank" rel="noopener">${esc(SITE_CONFIG.telegramUsername)}</a></div></footer>`;
+  $("#navCount").textContent=u.selected.length?`(${u.selected.length})`:"";
+  $$("#app [data-nav]").forEach(b=>b.classList.toggle("active",b.dataset.nav===activePage));
+  renderPage();
+}
+function go(p){if(!requireUser())return;activePage=p;window.scrollTo({top:0,behavior:"smooth"});render()}
+function renderAuth(){
+  $("#app").innerHTML=`<div class="auth"><div class="glass auth-card">
+    <div class="eyebrow">XD PLAYER • PRIVATE LIBRARY</div><h1>${esc(SITE_CONFIG.authTitle)}</h1>
+    <p class="muted" style="text-align:center">برای دسترسی به کتابخانه، ابتدا وارد شوید یا حساب بسازید.</p>
+    <div class="auth-tabs"><button class="btn primary" id="loginTab">ورود</button><button class="btn ghost" id="signupTab">ثبت‌نام</button></div>
+    <form id="authForm"></form>
+    <p class="note">نسخه Demo است؛ اطلاعات حساب فقط در LocalStorage همین مرورگر نگهداری می‌شود.</p>
+  </div></div>`;
+  const mode=load("authMode","login");setupAuth(mode);
+}
+function setupAuth(mode){
+  const form=$("#authForm");$("#loginTab").className=`btn ${mode==="login"?"primary":"ghost"}`;$("#signupTab").className=`btn ${mode==="signup"?"primary":"ghost"}`;
+  $("#loginTab").onclick=()=>setupAuth("login");$("#signupTab").onclick=()=>setupAuth("signup");
+  form.innerHTML=mode==="login"?`
+    <div class="field"><label>نام کاربری</label><input class="input" id="username" autocomplete="username" required maxlength="30"></div>
+    <div class="field"><label>رمز عبور</label><input class="input" id="password" type="password" autocomplete="current-password" required minlength="6"></div>
+    <button class="btn primary" style="width:100%">ورود به کتابخانه</button>
+    <p class="small muted">ورود مدیر: <b>admin</b> / <b>XDAdmin-2026!</b></p>`
+  :`
+    <div class="field"><label>نام کاربری</label><input class="input" id="username" autocomplete="username" required maxlength="30"></div>
+    <div class="field"><label>رمز عبور</label><input class="input" id="password" type="password" autocomplete="new-password" required minlength="8"></div>
+    <div class="field"><label>تکرار رمز عبور</label><input class="input" id="confirm" type="password" autocomplete="new-password" required minlength="8"></div>
+    <button class="btn primary" style="width:100%">ساخت حساب</button>`;
+  form.onsubmit=e=>{
+    e.preventDefault();
+    const username=$("#username").value.trim(), password=$("#password").value;
+    if(!/^[a-zA-Z0-9_.-]{3,30}$/.test(username))return toast("نام کاربری فقط شامل حروف انگلیسی، عدد، _، - و . باشد.","error");
+    if(mode==="login"){
+      const u=users.find(x=>x.username.toLowerCase()===username.toLowerCase()&&x.password===password);
+      if(!u)return toast("نام کاربری یا رمز عبور نادرست است.","error");
+      session={userId:u.id,at:Date.now()};save("session",session);activePage="home";render();toast("خوش آمدید ✨","success");
+    }else{
+      if(password.length<8)return toast("رمز عبور باید حداقل ۸ کاراکتر باشد.","error");
+      if(password!==$("#confirm").value)return toast("تکرار رمز عبور مطابقت ندارد.","error");
+      if(users.some(x=>x.username.toLowerCase()===username.toLowerCase()))return toast("این نام کاربری قبلاً ثبت شده است.","error");
+      const u={id:uid(),username,password,createdAt:new Date().toISOString(),selected:[],console:"x1",admin:false};
+      users.push(u);save("users",users);session={userId:u.id,at:Date.now()};save("session",session);activePage="home";render();toast("حساب شما با موفقیت ساخته شد.","success");
+    }
+  };
+}
+function showAuth(){session=null;localStorage.removeItem(idKey("session"));renderAuth()}
+function logout(){session=null;localStorage.removeItem(idKey("session"));activePage="home";renderAuth();toast("از حساب خارج شدید.","info")}
+
+/* ---------- صفحات ---------- */
+function renderPage(){
+  if(activePage==="home")renderHome();
+  else if(activePage==="library")renderLibrary();
+  else if(activePage==="vault")renderVault();
+  else if(activePage==="profile")renderProfile();
+  else if(activePage==="about")renderAbout();
+  else if(activePage==="admin"&&isAdmin())renderAdmin();else renderHome();
+}
+function renderHome(){
+  $("#main").innerHTML=`<section class="hero"><div class="container">
+    <div class="eyebrow">PREMIUM GAME LIBRARY • ${GAMES.length}+ TITLES</div>
+    <h1>${esc(SITE_CONFIG.heroTitle)}</h1><p>${esc(SITE_CONFIG.heroSubtitle)}</p>
+    <div style="margin-top:22px"><button class="btn primary" onclick="go('library')">شروع انتخاب بازی‌ها →</button></div>
+  </div></section>
+  <section class="section"><div class="container">
+    <div class="section-head"><div><h2>انتخاب کنسول</h2><div class="muted">فضای قابل استفاده برای کتابخانه شما</div></div><div class="muted">کنسول فعلی: <b class="green">${esc(CONSOLES.find(c=>c.id===currentUser().console)?.name||"—")}</b></div></div>
+    <div class="console-grid">${CONSOLES.map(c=>`<div class="glass console ${currentUser().console===c.id?"selected":""}" onclick="chooseConsole('${c.id}')"><h3>${esc(c.name)}</h3><div class="muted">فضای قابل استفاده</div><strong>${fmt(c.capacity)} GB</strong><div class="small muted">ظرفیت تبلیغاتی: ${c.raw}</div></div>`).join("")}</div>
+  </div></section>
+  <section class="section"><div class="container"><div class="glass about"><h2>کتابخانه شما آماده است</h2><p>بازی‌ها را از کتابخانه انتخاب کنید، فضای ذخیره‌سازی را لحظه‌ای ببینید و در پایان فهرست بازی‌های خود را به شکل PNG دریافت کنید.</p></div></div></section>`;
+}
+function chooseConsole(id){
+  const u=currentUser();u.console=id;persistUser(u);render();toast("کنسول انتخاب شد و فضای ذخیره‌سازی به‌روزرسانی شد.","success");
+}
+function applyFilters(){
+  const q=query.toLowerCase();
+  filtered=GAMES.filter(g=>(activeGenre==="همه"||g.genre.toLowerCase().includes(activeGenre.toLowerCase()))&&(g.name.toLowerCase().includes(q)||g.code.toLowerCase().includes(q)||g.genre.toLowerCase().includes(q)));
+  filtered.sort((a,b)=>{
+    if(sortMode==="newest")return b.releaseYear-a.releaseYear;
+    if(sortMode==="oldest")return a.releaseYear-b.releaseYear;
+    if(sortMode==="small")return a.size-b.size;
+    if(sortMode==="large")return b.size-a.size;
+    return a.name.localeCompare(b.name);
+  });
+}
+const GENRES=["همه","Action","RPG","Adventure","Horror","Shooter","Racing","Sports","Strategy","Survival","Open World","Fighting","Platformer","Indie","Simulation","Souls-like","Stealth","Story-driven"];
+function renderLibrary(){
+  applyFilters();renderIndex=0;
+  $("#main").innerHTML=`<section class="section"><div class="container">
+    <div class="section-head"><div><h2>${SITE_CONFIG.libraryTitle}</h2><div class="muted">${GAMES.length} عنوان واقعی در دیتابیس محلی</div></div><button class="btn primary" onclick="go('vault')">❤️ بازی‌های من</button></div>
+    <div class="glass toolbar"><input id="search" class="input" placeholder="🔍 جستجوی بازی..." value="${esc(query)}"><select id="sort" class="select"><option value="newest">جدیدترین</option><option value="oldest">قدیمی‌ترین</option><option value="small">کم‌حجم‌ترین</option><option value="large">بیش‌حجم‌ترین</option><option value="alpha">الفبایی</option></select><div class="muted" style="display:flex;align-items:center;justify-content:center">نمایش سریع و بهینه</div></div>
+    <div class="chips">${GENRES.map(x=>`<button class="chip ${activeGenre===x?"active":""}" onclick="setGenre('${esc(x)}')">${esc(x)}</button>`).join("")}</div>
+    <div id="gameGrid" class="grid"></div>
+  </div></section>`;
+  $("#search").oninput=e=>{query=e.target.value;searchDebounced()};
+  $("#sort").value=sortMode;
+  $("#sort").onchange=e=>{sortMode=e.target.value;applyFilters();renderCards(true)};
+  renderCards(true);
+}
+function setGenre(g){activeGenre=g;renderLibrary()}
+function renderCards(reset=false){
+  if(reset){applyFilters();renderIndex=0}
+  const grid=$("#gameGrid");if(!grid)return;
+  if(!filtered.length){grid.innerHTML=`<div class="glass empty" style="grid-column:1/-1">نتیجه‌ای پیدا نشد.</div>`;return}
+  if(reset)grid.innerHTML="";
+  if(renderTimer)clearTimeout(renderTimer);
+  const batch=18, slice=filtered.slice(renderIndex,renderIndex+batch);
+  grid.insertAdjacentHTML("beforeend",slice.map(cardHTML).join(""));
+  renderIndex+=slice.length;
+  requestAnimationFrame(()=>observeCards(grid));
+  if(renderIndex<filtered.length)renderTimer=setTimeout(()=>renderCards(false),30);
+}
+function cardHTML(g){
+  const chosen=currentUser().selected.includes(g.id);
+  return `<article class="glass card" data-id="${g.id}">
+    ${chosen?`<div class="selected-tag">✓ انتخاب شده</div>`:""}${imgFor(g)}
+    <div class="card-body"><h3>${esc(g.name)}</h3><div class="meta"><span>کد: <b>${g.code}</b></span><span>حجم: <b>${fmt(g.size)} GB</b></span><span>سال: <b>${g.releaseYear}</b></span><span>${esc(g.genre)}</span></div>
+    <div class="card-actions"><button class="btn ${chosen?"danger":"primary"}" onclick="toggleGame(${g.id})">${chosen?"❌ حذف":"➕ افزودن"}</button><button class="btn ghost" onclick="openDetail(${g.id})">جزئیات</button></div></div>
+  </article>`;
+}
+let cardObserver;
+function observeCards(root){
+  cardObserver?.disconnect();
+  cardObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add("visible");cardObserver.unobserve(e.target)}}),{rootMargin:"80px"});
+  $$(".card",root).forEach(c=>cardObserver.observe(c));
+}
+
+/* ---------- Vault و ظرفیت ---------- */
+function used(u){return u.selected.reduce((s,id)=>s+(GAMES.find(g=>g.id===id)?.size||0),0)}
+function renderVault(){
+  const u=currentUser(),c=CONSOLES.find(x=>x.id===u.console)||CONSOLES[0],use=used(u),free=Math.max(0,c.capacity-use),pct=Math.min(100,use/c.capacity*100);
+  const near=GAMES.filter(g=>!u.selected.includes(g.id)&&g.size<=free).sort((a,b)=>Math.abs(free-a.size)-Math.abs(free-b.size)).slice(0,2);
+  $("#main").innerHTML=`<section class="section"><div class="container">
+  <div class="section-head"><div><h2>${SITE_CONFIG.vaultTitle}</h2><div class="muted">${u.selected.length} بازی انتخاب شده</div></div>${u.selected.length?`<button class="btn primary" onclick="downloadList()">📥 ${esc(SITE_CONFIG.downloadTitle)}</button>`:""}</div>
+  <div class="layout"><div class="grid" id="vaultGrid">${u.selected.length?u.selected.map(id=>GAMES.find(g=>g.id===id)).filter(Boolean).map(cardHTML).join(""):`<div class="glass empty" style="grid-column:1/-1">${esc(SITE_CONFIG.emptyText)}<br><button class="btn primary" style="margin-top:14px" onclick="go('library')">رفتن به کتابخانه</button></div>`}</div>
+  <aside class="glass vault"><h3>💾 مدیریت فضا</h3><div class="stat"><span>کنسول</span><strong>${esc(c.name)}</strong></div><div class="stat"><span>فضای استفاده‌شده</span><strong id="usedCounter" class="green">0 GB</strong></div><div class="stat"><span>فضای خالی</span><strong id="freeCounter">${fmt(free)} GB</strong></div><div class="progress ${pct>=90?"hot":""}"><i style="width:${pct}%"></i></div><div class="small muted" style="text-align:center">${pct.toFixed(1)}% مصرف شده</div>
+  ${pct>=90?`<div class="toast warning" style="margin-top:14px;animation:none">⚠️ هشدار: فضای ذخیره‌سازی شما رو به اتمام است!</div>`:""}
+  <div class="suggestions"><h4>پیشنهاد هوشمند</h4>${near.length?near.map(g=>`<div class="suggestion">${esc(g.name)} <span>${fmt(g.size)} GB</span></div>`).join(""):`<div class="muted small">بازی مناسبی با فضای فعلی پیدا نشد.</div>`}</div>
+  </aside></div></div></section>`;
+  animateNumber($("#usedCounter"),0,use);
+  $$(".card").forEach(x=>x.classList.add("visible"));
+}
+function animateNumber(el,from,to){
+  if(!el)return;const start=performance.now(),dur=650;
+  function tick(now){const p=Math.min(1,(now-start)/dur),e=1-Math.pow(1-p,3);el.textContent=`${fmt(from+(to-from)*e)} GB`;if(p<1)requestAnimationFrame(tick)}
+  requestAnimationFrame(tick);
+}
+function toggleGame(id){
+  const u=currentUser(),g=GAMES.find(x=>x.id===id);if(!g)return;
+  if(u.selected.includes(id)){u.selected=u.selected.filter(x=>x!==id);persistUser(u);toast(`${g.name} از بازی‌های شما حذف شد.`,"info");render();return}
+  const c=CONSOLES.find(x=>x.id===u.console)||CONSOLES[0],next=used(u)+g.size;
+  if(next>c.capacity){toast("⛔ خطا! فضای کافی برای این بازی وجود ندارد. لطفاً یک بازی را حذف کنید.","error");return}
+  u.selected.push(id);persistUser(u);toast(`${g.name} به بازی‌های شما اضافه شد.`,"success");render();
+}
+
+/* ---------- Modal جزئیات ---------- */
+function openDetail(id){
+  const g=GAMES.find(x=>x.id===id);if(!g)return;currentModal=g;
+  const chosen=currentUser().selected.includes(id);
+  const m=document.createElement("div");m.className="modal open";m.id="gameModal";m.innerHTML=`<div class="glass modal-box">
+  <button class="close" onclick="closeModal()">✕</button>${imgFor(g,"modal-cover")}<h2 style="font-family:Orbitron">${esc(g.name)}</h2>
+  <div class="detail-grid"><div>کد<br><b>${g.code}</b></div><div>سال<br><b>${g.releaseYear}</b></div><div>حجم<br><b>${fmt(g.size)} GB</b></div><div>ژانر<br><b>${esc(g.genre)}</b></div></div>
+  <p class="muted" style="line-height:2">${esc(g.description)}</p>
+  <button class="btn ${chosen?"danger":"primary"}" onclick="toggleGame(${g.id});closeModal()">${chosen?"❌ حذف از بازی‌های من":"➕ افزودن به بازی‌های من"}</button>
+  </div>`;
+  document.body.appendChild(m);m.onclick=e=>{if(e.target===m)closeModal()}
+}
+function closeModal(){$("#gameModal")?.remove();currentModal=null}
+
+/* ---------- پروفایل ---------- */
+function renderProfile(){
+  const u=currentUser(),c=CONSOLES.find(x=>x.id===u.console)||CONSOLES[0],use=used(u),free=c.capacity-use;
+  $("#main").innerHTML=`<section class="section"><div class="container"><h2>👤 پروفایل</h2><div class="profile-grid" style="margin-top:18px">
+  <div class="glass profile-card"><div class="muted">نام کاربری</div><h3>${esc(u.username)}</h3></div>
+  <div class="glass profile-card"><div class="muted">تعداد بازی‌های انتخاب‌شده</div><h3>${u.selected.length}</h3></div>
+  <div class="glass profile-card"><div class="muted">حجم کل بازی‌ها</div><h3 class="green">${fmt(use)} GB</h3></div>
+  <div class="glass profile-card"><div class="muted">کنسول انتخاب‌شده</div><h3>${esc(c.name)}</h3></div>
+  <div class="glass profile-card"><div class="muted">فضای مصرف‌شده</div><h3>${fmt(use)} GB</h3></div>
+  <div class="glass profile-card"><div class="muted">فضای باقی‌مانده</div><h3>${fmt(free)} GB</h3></div>
+  <div class="glass profile-card"><div class="muted">تاریخ ساخت حساب</div><h3>${new Date(u.createdAt).toLocaleDateString("fa-IR")}</h3></div>
+  <div class="glass profile-card"><button class="btn danger" onclick="logout()">خروج از حساب</button></div>
+  </div></div></section>`;
+}
+function renderAbout(){
+ $("#main").innerHTML=`<section class="section"><div class="container"><div class="glass about"><h2>${esc(SITE_CONFIG.aboutTitle)}</h2>
+ <p><strong>XD Player</strong> یک کتابخانه مستقل برای انتخاب، مدیریت و سازماندهی بازی‌های مورد علاقه کاربران است. اگر بازی موردنظر شما در کتابخانه وجود ندارد، از طریق پشتیبانی تلگرام اطلاع دهید تا در اسرع وقت بررسی و در صورت امکان به کتابخانه اضافه شود.</p>
+ <p>${esc(SITE_CONFIG.supportText)}: <a href="${esc(SITE_CONFIG.telegramLink)}" target="_blank" rel="noopener">${esc(SITE_CONFIG.telegramUsername)}</a></p></div></div></section>`;
+}
+
+/* ---------- پنل مدیر ---------- */
+function renderAdmin(){
+ if(!isAdmin()){toast("دسترسی غیرمجاز.","error");return go("home")}
+ $("#main").innerHTML=`<section class="section"><div class="container"><div class="section-head"><div><h2>${esc(SITE_CONFIG.adminTitle)}</h2><div class="muted">اطلاعات فقط برای Demo در LocalStorage ذخیره شده‌اند.</div></div></div>
+ <div class="glass admin-wrap"><table class="admin-table"><thead><tr><th>Username</th><th>Password</th><th>Name</th><th>بازی‌ها</th><th>حجم انتخاب‌شده</th></tr></thead><tbody>
+ ${users.map(u=>`<tr><td>${esc(u.username)} ${u.admin?'<span class="green">(Admin)</span>':''}</td><td><span class="danger-text">••••••••</span></td><td>${esc(u.username)}</td><td>${u.selected.length}</td><td>${fmt(used(u))} GB</td></tr>`).join("")}
+ </tbody></table></div></div></section>`;
+}
+
+/* ---------- ساخت PNG بدون کتابخانه خارجی ---------- */
+function downloadList(){
+ const u=currentUser();if(!u.selected.length)return toast("ابتدا حداقل یک بازی اضافه کنید.","warning");
+ const c=document.createElement("canvas"),ctx=c.getContext("2d"),W=1200,H=Math.max(520,220+u.selected.length*58);
+ c.width=W;c.height=H;ctx.fillStyle="#0A0A0A";ctx.fillRect(0,0,W,H);
+ const grad=ctx.createLinearGradient(0,0,W,H);grad.addColorStop(0,"#0E7A0E");grad.addColorStop(.45,"#0A0A0A");grad.addColorStop(1,"#111");ctx.globalAlpha=.24;ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);ctx.globalAlpha=1;
+ ctx.strokeStyle="#39FF5A";ctx.lineWidth=2;ctx.strokeRect(28,28,W-56,H-56);
+ ctx.fillStyle="#39FF5A";ctx.font="800 42px Orbitron";ctx.textAlign="left";ctx.fillText("XD PLAYER",65,92);
+ ctx.fillStyle="#fff";ctx.font="700 28px Exo 2";ctx.fillText("بازی‌های انتخاب‌شده من",65,140);
+ ctx.font="500 22px Exo 2";u.selected.map(id=>GAMES.find(g=>g.id===id)).filter(Boolean).forEach((g,i)=>{const y=205+i*58;ctx.fillStyle="#A7A7A7";ctx.fillText(`${g.code} | ${g.name}`,65,y)});
+ ctx.fillStyle="#69736c";ctx.font="16px Exo 2";ctx.fillText(`${u.selected.length} games • ${fmt(used(u))} GB`,65,H-48);
+ const a=document.createElement("a");a.download="XD_Player_Game_List.png";a.href=c.toDataURL("image/png");a.click();toast("تصویر لیست بازی‌ها ساخته و دانلود شد.","success");
+}
+
+/* ---------- Particle Background سبک ---------- */
+(function particles(){
+ const cv=$("#particles"),ctx=cv.getContext("2d"),DPR=Math.min(devicePixelRatio||1,1.5);let pts=[],mx=-9999,my=-9999,w,h;
+ function resize(){w=innerWidth;h=innerHeight;cv.width=w*DPR;cv.height=h*DPR;cv.style.width=w+"px";cv.style.height=h+"px";ctx.setTransform(DPR,0,0,DPR,0,0);const n=innerWidth<700?28:55;pts=Array.from({length:n},()=>({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.22,vy:(Math.random()-.5)*.22,r:Math.random()*1.2+.3}))}
+ addEventListener("resize",resize,{passive:true});addEventListener("pointermove",e=>{mx=e.clientX;my=e.clientY},{passive:true});resize();
+ function loop(){ctx.clearRect(0,0,w,h);for(const p of pts){const dx=mx-p.x,dy=my-p.y,d=Math.hypot(dx,dy);if(d<130){p.vx+=dx/d*.003;p.vy+=dy/d*.003}p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;ctx.beginPath();ctx.fillStyle="rgba(57,255,90,.28)";ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()}requestAnimationFrame(loop)}
+ loop();
+})();
+
+/* ---------- IntersectionObserver برای Lazy Render ---------- */
+if("IntersectionObserver" in window){const lazy=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const img=e.target;if(img.dataset.src){img.src=img.dataset.src;delete img.dataset.src}lazy.unobserve(img)}}),{rootMargin:"200px"});window.observeLazy=()=>$$("img[data-src]").forEach(x=>lazy.observe(x))}
+
+/* ---------- شروع برنامه ---------- */
+if(session?.userId&&!currentUser()){session=null;localStorage.removeItem(idKey("session"))}
+render();
+</script>
+</body>
+</html>
